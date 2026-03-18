@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-amber: #BA7517;
+  --color-amber-light: #D4961F;
+  --color-amber-dark: #8E5A11;
+  --color-teal: #1D9E75;
+  --color-teal-light: #25C693;
+  --color-dark: #1a1a18;
+  --color-dark-card: #242422;
+  --color-dark-border: #333331;
+  --color-dark-hover: #2a2a28;
+  --color-light: #e8e6df;
+  --color-light-muted: #a8a69f;
+}
+
+body {
+  background: var(--color-dark);
+  color: var(--color-light);
+  font-family: 'Noto Sans TC', 'Geist', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-border);
+  border-radius: 3px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes unlockPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(29, 158, 117, 0.2); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29, 158, 117, 0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+.animate-unlock {
+  animation: unlockPulse 0.6s ease-out;
+}
