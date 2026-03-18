@@ -29,7 +29,7 @@ export default function VisitsPage() {
     setLoading(true)
     let query = supabase
       .from('visits')
-      .select('id, visit_date, amount, weather, arrival_time, notes, member:members(id, name, phone)')
+      .select('id, visit_date, amount, weather, arrival_time, notes, member:members!visits_member_id_fkey(id, name, phone)')
       .order('created_at', { ascending: false })
 
     if (!showAll) {

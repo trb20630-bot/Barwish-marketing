@@ -68,7 +68,7 @@ export default function Home() {
   async function fetchRecentVisits() {
     const { data } = await supabase
       .from('visits')
-      .select('id, visit_date, amount, member:members(name, phone)')
+      .select('id, visit_date, amount, member:members!visits_member_id_fkey(name, phone)')
       .order('created_at', { ascending: false })
       .limit(5)
 

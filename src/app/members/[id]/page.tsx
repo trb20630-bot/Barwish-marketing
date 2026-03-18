@@ -41,8 +41,8 @@ export default function MemberDetailPage() {
       supabase.from('visits').select('*').eq('member_id', id).order('visit_date', { ascending: false }).limit(50),
       supabase.from('member_achievements').select('*, achievement:achievements(*)').eq('member_id', id).order('unlocked_at', { ascending: false }),
       supabase.from('achievements').select('id', { count: 'exact' }),
-      supabase.from('referrals').select('id, created_at, referred:members!referrals_referred_id_fkey(id, name, phone)').eq('referrer_id', id).order('created_at', { ascending: false }),
-      supabase.from('referrals').select('referrer:members!referrals_referrer_id_fkey(name, phone)').eq('referred_id', id).limit(1),
+      supabase.from('referrals').select('id, created_at, referred:referred_id(id, name, phone)').eq('referrer_id', id).order('created_at', { ascending: false }),
+      supabase.from('referrals').select('referrer:referrer_id(name, phone)').eq('referred_id', id).limit(1),
     ])
 
     if (memberRes.data) {
