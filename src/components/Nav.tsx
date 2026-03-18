@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
-  { href: '/', label: '首頁', icon: '🏠' },
-  { href: '/members', label: '會員', icon: '👥' },
-  { href: '/visits/new', label: '登記', icon: '➕' },
-  { href: '/achievements', label: '成就', icon: '🏆' },
+  { href: '/', label: '首頁', icon: '⌂' },
+  { href: '/members', label: '會員', icon: '♦' },
+  { href: '/visits/new', label: '登記', icon: '+', highlight: true },
+  { href: '/visits', label: '記錄', icon: '≡' },
+  { href: '/achievements', label: '成就', icon: '★' },
 ]
 
 export default function Nav() {
@@ -25,19 +26,23 @@ export default function Nav() {
         {navItems.map((item) => {
           const isActive = item.href === '/'
             ? pathname === '/'
-            : pathname.startsWith(item.href)
+            : pathname.startsWith(item.href) && !(item.href === '/visits' && pathname === '/visits/new')
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 py-2 md:py-4 md:flex-none transition-colors ${
-                isActive
+              className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 md:py-4 md:flex-none transition-colors ${
+                item.highlight
                   ? 'text-amber'
-                  : 'text-light-muted hover:text-light'
+                  : isActive
+                    ? 'text-amber'
+                    : 'text-light-muted hover:text-light'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <span className={`text-lg font-bold ${item.highlight ? 'bg-amber text-dark w-8 h-8 rounded-full flex items-center justify-center text-xl' : ''}`}>
+                {item.icon}
+              </span>
               <span className="text-[10px] md:text-xs">{item.label}</span>
             </Link>
           )
