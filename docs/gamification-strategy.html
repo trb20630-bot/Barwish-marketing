@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>欲室 BAR WISH｜遊戲化行銷策略報告</title>
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f7f4;
+      --bg-tertiary: #f1efe8;
+      --text-primary: #2c2c2a;
+      --text-secondary: #73726c;
+      --border: rgba(0,0,0,0.1);
+      --teal-50: #E1F5EE; --teal-600: #0F6E56; --teal-800: #085041;
+      --purple-50: #EEEDFE; --purple-600: #534AB7; --purple-800: #3C3489;
+      --amber-50: #FAEEDA; --amber-600: #854F0B; --amber-800: #633806;
+      --coral-50: #FAECE7; --coral-600: #993C1D; --coral-800: #712B13;
+      --blue-50: #E6F1FB; --blue-600: #185FA5; --blue-800: #0C447C;
+      --gray-50: #F1EFE8; --gray-600: #5F5E5A; --gray-800: #444441;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1a1a18;
+        --bg-secondary: #2c2c2a;
+        --bg-tertiary: #3d3d3a;
+        --text-primary: #e8e6df;
+        --text-secondary: #9c9a92;
+        --border: rgba(255,255,255,0.1);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      padding: 48px 24px;
+      background: var(--bg-primary);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+    .section {
+      background: var(--bg-primary);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    /* Octalysis Radar */
+    .octalysis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .cd-card {
+      padding: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .cd-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .cd-card.strong { background: var(--teal-50); border-color: var(--teal-600); }
+    .cd-card.medium { background: var(--amber-50); border-color: var(--amber-600); }
+    .cd-card.weak { background: var(--gray-50); border-color: var(--gray-600); }
+    .cd-card .cd-num {
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.7;
+    }
+    .cd-card .cd-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 4px 0;
+    }
+    .cd-card .cd-status {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    .cd-card.strong .cd-num, .cd-card.strong .cd-name, .cd-card.strong .cd-status { color: var(--teal-800); }
+    .cd-card.medium .cd-num, .cd-card.medium .cd-name, .cd-card.medium .cd-status { color: var(--amber-800); }
+    .cd-card.weak .cd-num, .cd-card.weak .cd-name, .cd-card.weak .cd-status { color: var(--gray-800); }
+    
+    /* Detail Panel */
+    .detail-panel {
+      display: none;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 16px;
+      animation: slideDown 0.3s ease;
+    }
+    .detail-panel.active { display: block; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .detail-panel h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .detail-panel p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .detail-panel ul {
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .detail-panel li { margin-bottom: 6px; }
+    .close-btn {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    
+    /* Brand Mission */
+    .mission-box {
+      background: linear-gradient(135deg, var(--amber-50), var(--coral-50));
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .mission-box .label {
+      font-size: 13px;
+      color: var(--amber-800);
+      margin-bottom: 8px;
+    }
+    .mission-box .slogan {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--coral-800);
+      font-style: italic;
+    }
+    
+    /* Member System */
+    .level-flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 16px 0;
+    }
+    .level-card {
+      flex-shrink: 0;
+      width: 140px;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .level-card:hover { transform: scale(1.05); }
+    .level-card.l1 { background: var(--gray-50); color: var(--gray-800); }
+    .level-card.l2 { background: var(--blue-50); color: var(--blue-800); }
+    .level-card.l3 { background: var(--purple-50); color: var(--purple-800); }
+    .level-card.l4 { background: var(--amber-50); color: var(--amber-800); }
+    .level-card .level-name { font-weight: 600; font-size: 15px; }
+    .level-card .level-desc { font-size: 12px; margin-top: 4px; opacity: 0.8; }
+    .arrow {
+      font-size: 20px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    
+    /* Indicators */
+    .indicator-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .indicator-card {
+      background: var(--teal-50);
+      padding: 16px 12px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .indicator-card:last-child { background: var(--coral-50); }
+    .indicator-card:hover { transform: translateY(-2px); }
+    .indicator-card .ind-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-800);
+    }
+    .indicator-card:last-child .ind-name { color: var(--coral-800); }
+    .indicator-card .ind-count {
+      font-size: 12px;
+      color: var(--teal-600);
+      margin-top: 4px;
+    }
+    .indicator-card:last-child .ind-count { color: var(--coral-600); }
+    
+    /* Game Loop */
+    .loop-container {
+      position: relative;
+      padding: 24px 0;
+    }
+    .loop-stages {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .loop-stage {
+      flex: 1;
+      padding: 20px 16px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .loop-stage:hover { transform: translateY(-4px); }
+    .loop-stage.s1 { background: var(--purple-50); color: var(--purple-800); }
+    .loop-stage.s2 { background: var(--blue-50); color: var(--blue-800); }
+    .loop-stage.s3 { background: var(--teal-50); color: var(--teal-800); }
+    .loop-stage.s4 { background: var(--amber-50); color: var(--amber-800); }
+    .loop-stage .stage-name { font-weight: 600; font-size: 15px; }
+    .loop-stage .stage-desc { font-size: 12px; margin-top: 6px; opacity: 0.8; }
+    .loop-arrow {
+      text-align: center;
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    /* SAPS Model */
+    .saps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .saps-card {
+      padding: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .saps-card:hover { transform: scale(1.02); }
+    .saps-card.status { background: var(--teal-50); }
+    .saps-card.access { background: var(--blue-50); }
+    .saps-card.power { background: var(--purple-50); }
+    .saps-card.stuff { background: var(--gray-50); }
+    .saps-card .saps-letter {
+      font-size: 24px;
+      font-weight: 700;
+      opacity: 0.3;
+    }
+    .saps-card .saps-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 8px 0 4px;
+    }
+    .saps-card .saps-example {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    .saps-card.status .saps-letter, .saps-card.status .saps-name, .saps-card.status .saps-example { color: var(--teal-800); }
+    .saps-card.access .saps-letter, .saps-card.access .saps-name, .saps-card.access .saps-example { color: var(--blue-800); }
+    .saps-card.power .saps-letter, .saps-card.power .saps-name, .saps-card.power .saps-example { color: var(--purple-800); }
+    .saps-card.stuff .saps-letter, .saps-card.stuff .saps-name, .saps-card.stuff .saps-example { color: var(--gray-800); }
+    .saps-note {
+      background: var(--bg-secondary);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    
+    /* Priority List */
+    .priority-list { margin-top: 16px; }
+    .priority-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .priority-item:hover { background: var(--bg-tertiary); }
+    .priority-badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .priority-badge.p0 { background: var(--coral-50); color: var(--coral-800); }
+    .priority-badge.p1 { background: var(--amber-50); color: var(--amber-800); }
+    .priority-badge.p2 { background: var(--gray-50); color: var(--gray-800); }
+    .priority-content { flex: 1; }
+    .priority-title { font-size: 14px; font-weight: 500; }
+    .priority-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .priority-cd {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      color: var(--text-secondary);
+    }
+    
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--bg-secondary);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .metric-change {
+      font-size: 12px;
+      color: var(--teal-600);
+      margin-top: 4px;
+    }
+    
+    /* Warning Box */
+    .warning-box {
+      background: var(--amber-50);
+      border-left: 4px solid var(--amber-600);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 24px;
+    }
+    .warning-box .warning-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--amber-800);
+      margin-bottom: 6px;
+    }
+    .warning-box .warning-text {
+      font-size: 13px;
+      color: var(--amber-800);
+      opacity: 0.85;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .octalysis-grid { grid-template-columns: repeat(2, 1fr); }
+      .indicator-grid { grid-template-columns: repeat(3, 1fr); }
+      .loop-stages { flex-wrap: wrap; }
+      .loop-stage { flex: 1 1 45%; }
+      .saps-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="header">
+      <h1>欲室 BAR WISH</h1>
+      <p>遊戲化行銷策略報告｜基於八角框架 Octalysis Framework</p>
+    </div>
+    
+    <!-- Brand Mission -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--amber-50); color: var(--amber-800);">🎯</div>
+        品牌使命感設計（CD1）
+      </div>
+      <div class="mission-box">
+        <div class="label">核心身份定位</div>
+        <div class="slogan">「懂得藏起來喝酒的大人」</div>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+        這個定位把劣勢變成優勢：「難找」不是缺點，是篩選機制。對齊 30-40 歲有品味、願意克服距離的目標客群。
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <div class="cd-card strong" onclick="showDetail('sacrifice1')">
+          <div class="cd-name">關閉 Google 定位</div>
+          <div class="cd-status">不想被所有人找到</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('sacrifice2')">
+          <div class="cd-name">不做廣告投放</div>
+          <div class="cd-status">只靠口碑與會員引路</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('sacrifice3')">
+          <div class="cd-name">VVIP 封頂 2000</div>
+          <div class="cd-status">寧可少賺也要維持品質</div>
+        </div>
+      </div>
+      <div id="detail-sacrifice1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('sacrifice1')">×</button>
+        <h4>犧牲行動：關閉 Google 定位</h4>
+        <p>這是最強的「犧牲行動」之一。當你願意放棄被搜尋到的機會，顧客才會真的相信你「不想被所有人找到」。</p>
+        <ul>
+          <li>損失：路過客、搜尋流量</li>
+          <li>獲得：品牌可信度、Speakeasy 神秘感</li>
+          <li>效果：「懂的人才知道」的身份認同</li>
+        </ul>
+      </div>
+      <div id="detail-sacrifice2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('sacrifice2')">×</button>
+        <h4>犧牲行動：不做廣告投放</h4>
+        <p>放棄花錢買曝光，只靠口碑與會員引路。這讓「引路人」機制變得更有價值。</p>
+        <ul>
+          <li>損失：廣告帶來的新客</li>
+          <li>獲得：更高的客人品質、更強的會員歸屬感</li>
+          <li>效果：會員推薦變成「帶你進入秘密基地」的榮耀</li>
+        </ul>
+      </div>
+      <div id="detail-sacrifice3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('sacrifice3')">×</button>
+        <h4>犧牲行動：VVIP 封頂 2000 人</h4>
+        <p>設定會員上限，寧可少賺也要維持品質。這讓 VVIP 身份變得稀有且珍貴。</p>
+        <ul>
+          <li>損失：潛在營收上限</li>
+          <li>獲得：稀缺性、專屬感、會員忠誠度</li>
+          <li>效果：「我是 2000 人之一」的身份認同</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Octalysis Diagnosis -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--purple-50); color: var(--purple-800);">⬡</div>
+        八角框架現況診斷
+      </div>
+      <div class="octalysis-grid">
+        <div class="cd-card weak" onclick="showDetail('cd1')">
+          <div class="cd-num">CD1</div>
+          <div class="cd-name">重大使命</div>
+          <div class="cd-status">⚠️ 待設計</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('cd2')">
+          <div class="cd-num">CD2</div>
+          <div class="cd-name">發展成就</div>
+          <div class="cd-status">✅ 已到位</div>
+        </div>
+        <div class="cd-card weak" onclick="showDetail('cd3')">
+          <div class="cd-num">CD3</div>
+          <div class="cd-name">創意賦能</div>
+          <div class="cd-status">⚠️ 待設計</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('cd4')">
+          <div class="cd-num">CD4</div>
+          <div class="cd-name">所有權</div>
+          <div class="cd-status">✅ 已到位</div>
+        </div>
+        <div class="cd-card medium" onclick="showDetail('cd5')">
+          <div class="cd-num">CD5</div>
+          <div class="cd-name">社交影響</div>
+          <div class="cd-status">⚠️ 需強化</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('cd6')">
+          <div class="cd-num">CD6</div>
+          <div class="cd-name">稀缺性</div>
+          <div class="cd-status">✅ 已到位</div>
+        </div>
+        <div class="cd-card strong" onclick="showDetail('cd7')">
+          <div class="cd-num">CD7</div>
+          <div class="cd-name">不確定性</div>
+          <div class="cd-status">✅ 已到位</div>
+        </div>
+        <div class="cd-card weak" onclick="showDetail('cd8')">
+          <div class="cd-num">CD8</div>
+          <div class="cd-name">損失避免</div>
+          <div class="cd-status">⚠️ 待設計</div>
+        </div>
+        <div style="background: var(--bg-secondary); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 12px; color: var(--text-secondary);">整體形狀</div>
+          <div style="font-size: 14px; font-weight: 500; margin-top: 4px;">偏左腦 + 黑帽</div>
+        </div>
+      </div>
+      
+      <!-- Detail Panels for each CD -->
+      <div id="detail-cd1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd1')">×</button>
+        <h4>CD1 重大使命與呼召</h4>
+        <p>目前缺乏明確的品牌使命。需要建立「來欲室 = 成為某種人」的身份認同。</p>
+        <ul>
+          <li><strong>建議定位</strong>：「懂得藏起來喝酒的大人」</li>
+          <li><strong>設計方向</strong>：把「難找」變成品牌特色，而非缺點</li>
+          <li><strong>犧牲行動</strong>：關閉 Google 定位、不做廣告、會員封頂</li>
+        </ul>
+      </div>
+      <div id="detail-cd2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd2')">×</button>
+        <h4>CD2 發展與成就</h4>
+        <p>會員系統設計已經到位，有明確的進度感與成就感。</p>
+        <ul>
+          <li><strong>現有機制</strong>：4 層分級制度、50 項條件、實體標誌物</li>
+          <li><strong>進度感</strong>：從基礎會員到 VVIP 的升級路徑清晰</li>
+          <li><strong>可見成就</strong>：銅/銀/金標誌物讓成就可視化</li>
+        </ul>
+      </div>
+      <div id="detail-cd3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd3')">×</button>
+        <h4>CD3 創意賦能與回饋</h4>
+        <p>目前缺乏讓會員「創造」或「影響」的機制。</p>
+        <ul>
+          <li><strong>建議機制</strong>：元老投票權，可投票決定限定調酒</li>
+          <li><strong>設計方向</strong>：讓 VVIP 能影響菜單或活動內容</li>
+          <li><strong>效果</strong>：從「收集者」變成「參與者」</li>
+        </ul>
+      </div>
+      <div id="detail-cd4" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd4')">×</button>
+        <h4>CD4 所有權與佔有慾</h4>
+        <p>實體標誌物設計強化了「這是我的」感覺。</p>
+        <ul>
+          <li><strong>現有機制</strong>：銅/銀/金標誌物、VVIP 2000 人封頂</li>
+          <li><strong>心理效果</strong>：擁有標誌物 = 擁有身份證明</li>
+          <li><strong>強化方向</strong>：元老謝位牆，記錄每次來店</li>
+        </ul>
+      </div>
+      <div id="detail-cd5" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd5')">×</button>
+        <h4>CD5 社交影響與同理心</h4>
+        <p>目前設計偏向「個人收集」，缺乏「朋友都在」的社交拉力。</p>
+        <ul>
+          <li><strong>建議機制</strong>：引路人系統，帶朋友首訪雙方都解鎖條件</li>
+          <li><strong>磁力上限</strong>：每月只能當 3 次引路人（稀缺感）</li>
+          <li><strong>社交寶藏</strong>：某些標誌物「只能朋友送、不能自己買」</li>
+        </ul>
+      </div>
+      <div id="detail-cd6" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd6')">×</button>
+        <h4>CD6 稀缺性與迫切</h4>
+        <p>VVIP 封頂與條件不公開本身就製造了稀缺感。</p>
+        <ul>
+          <li><strong>現有機制</strong>：VVIP 2000 人封頂、隱藏條件不公開</li>
+          <li><strong>心理效果</strong>：「得不到的才最想要」</li>
+          <li><strong>注意事項</strong>：黑帽機制要節制，避免燒盡用戶</li>
+        </ul>
+      </div>
+      <div id="detail-cd7" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd7')">×</button>
+        <h4>CD7 不確定性與好奇心</h4>
+        <p>隱藏條件彩蛋設計是核心亮點，創造探索樂趣。</p>
+        <ul>
+          <li><strong>現有機制</strong>：條件不公開，顧客自行探索解鎖</li>
+          <li><strong>彩蛋設計</strong>：下雨天、遠距、生日等隱藏條件</li>
+          <li><strong>社群效果</strong>：「你知道怎麼解鎖 XX 嗎？」引發討論</li>
+        </ul>
+      </div>
+      <div id="detail-cd8" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('cd8')">×</button>
+        <h4>CD8 損失與避免</h4>
+        <p>目前缺乏「不想失去」的機制設計。</p>
+        <ul>
+          <li><strong>建議機制</strong>：會員等級維護制，每季需來店 1 次</li>
+          <li><strong>預警通知</strong>：維護期限前 2 週 Line OA 提醒</li>
+          <li><strong>注意事項</strong>：黑帽機制要溫和，不能讓人覺得被懲罰</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Member System -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--blue-50); color: var(--blue-800);">👥</div>
+        會員分級系統
+      </div>
+      <div class="level-flow">
+        <div class="level-card l1" onclick="showDetail('level1')">
+          <div class="level-name">第一層</div>
+          <div class="level-desc">基礎會員</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="level-card l2" onclick="showDetail('level2')">
+          <div class="level-name">第二層</div>
+          <div class="level-desc">銅標誌物</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="level-card l3" onclick="showDetail('level3')">
+          <div class="level-name">第三層</div>
+          <div class="level-desc">銀標誌物</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="level-card l4" onclick="showDetail('level4')">
+          <div class="level-name">VVIP</div>
+          <div class="level-desc">金標誌・封頂2000</div>
+        </div>
+      </div>
+      
+      <div id="detail-level1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('level1')">×</button>
+        <h4>第一層：基礎會員</h4>
+        <p>來店消費第二次以上即可登錄成為基礎會員。</p>
+        <ul>
+          <li>空白會員，零裝備狀態</li>
+          <li>開始累積條件解鎖進度</li>
+          <li>可使用 Line OA 訂位功能</li>
+        </ul>
+      </div>
+      <div id="detail-level2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('level2')">×</button>
+        <h4>第二層：銅標誌物</h4>
+        <p>完成約 20% 條件即可升級。</p>
+        <ul>
+          <li>獲得銅色實體標誌物</li>
+          <li>第二次來店滿低消當日 9 折</li>
+          <li>解鎖更多隱藏條件的線索</li>
+        </ul>
+      </div>
+      <div id="detail-level3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('level3')">×</button>
+        <h4>第三層：銀標誌物</h4>
+        <p>完成約 80% 條件即可升級。</p>
+        <ul>
+          <li>獲得銀色實體標誌物</li>
+          <li>Talk Show 優先保留搖滾區座位</li>
+          <li>私廚活動優先報名權</li>
+        </ul>
+      </div>
+      <div id="detail-level4" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('level4')">×</button>
+        <h4>VVIP：金標誌物</h4>
+        <p>完成 100% 條件，成為欲室元老。封頂 2000 人。</p>
+        <ul>
+          <li>獲得金色實體標誌物</li>
+          <li>元老投票權：可投票決定限定調酒</li>
+          <li>每次來店記錄「謝位」，累積專屬歷史</li>
+          <li>出現在品牌內容素材中</li>
+          <li>引路人次數加成：每月可當 5 次引路人</li>
+        </ul>
+      </div>
+      
+      <div style="font-size: 14px; font-weight: 500; margin: 24px 0 12px;">五大指標（約50項條件）</div>
+      <div class="indicator-grid">
+        <div class="indicator-card" onclick="showDetail('ind1')">
+          <div class="ind-name">來店次數</div>
+          <div class="ind-count">約10項</div>
+        </div>
+        <div class="indicator-card" onclick="showDetail('ind2')">
+          <div class="ind-name">產品相關</div>
+          <div class="ind-count">約10項</div>
+        </div>
+        <div class="indicator-card" onclick="showDetail('ind3')">
+          <div class="ind-name">消費金額</div>
+          <div class="ind-count">5-10項</div>
+        </div>
+        <div class="indicator-card" onclick="showDetail('ind4')">
+          <div class="ind-name">活動參與</div>
+          <div class="ind-count">5-10項</div>
+        </div>
+        <div class="indicator-card" onclick="showDetail('ind5')">
+          <div class="ind-name">隱藏彩蛋</div>
+          <div class="ind-count">驚喜條件</div>
+        </div>
+      </div>
+      
+      <div id="detail-ind1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('ind1')">×</button>
+        <h4>來店次數條件</h4>
+        <ul>
+          <li>累積來店 5 次</li>
+          <li>累積來店 10 次</li>
+          <li>累積來店 25 次</li>
+          <li>連續 4 週來店（常客徽章）</li>
+          <li>一個月內來店 3 次以上</li>
+        </ul>
+      </div>
+      <div id="detail-ind2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('ind2')">×</button>
+        <h4>產品相關條件</h4>
+        <ul>
+          <li>嘗試過 10 款不同調酒</li>
+          <li>點過所有招牌調酒</li>
+          <li>嘗試過季節限定調酒</li>
+          <li>點過完整餐食套餐</li>
+          <li>嘗試過私廚限定菜色</li>
+        </ul>
+      </div>
+      <div id="detail-ind3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('ind3')">×</button>
+        <h4>消費金額條件</h4>
+        <ul>
+          <li>單次消費滿 600 元</li>
+          <li>單次消費滿 1,000 元</li>
+          <li>單次消費滿 2,000 元</li>
+          <li>單次消費滿 3,000 元</li>
+          <li>累積消費滿 10,000 元</li>
+        </ul>
+      </div>
+      <div id="detail-ind4" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('ind4')">×</button>
+        <h4>活動參與條件</h4>
+        <ul>
+          <li>參加過 Talk Show</li>
+          <li>參加過私廚活動</li>
+          <li>參加過駐唱之夜</li>
+          <li>參加過節日特別活動</li>
+          <li>同一活動類型參加 3 次以上</li>
+        </ul>
+      </div>
+      <div id="detail-ind5" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('ind5')">×</button>
+        <h4>隱藏彩蛋條件</h4>
+        <p>這些條件不公開，讓顧客自行探索發現！</p>
+        <ul>
+          <li>🌧️ 下雨天來店 →「雨中漫步」徽章</li>
+          <li>🌙 深夜 2 點後還在 →「夜貓子」徽章</li>
+          <li>🎂 生日當週來店 → 隱藏禮物</li>
+          <li>🚗 從台北以外縣市來 →「遠道而來」徽章</li>
+          <li>👥 帶超過 5 位朋友來 →「派對王」徽章</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Game Loop -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--teal-50); color: var(--teal-800);">🔄</div>
+        遊戲迴圈設計
+      </div>
+      <div class="loop-container">
+        <div class="loop-stages">
+          <div class="loop-stage s1" onclick="showDetail('stage1')">
+            <div class="stage-name">發現</div>
+            <div class="stage-desc">引路人帶來</div>
+          </div>
+          <div class="loop-stage s2" onclick="showDetail('stage2')">
+            <div class="stage-name">引導</div>
+            <div class="stage-desc">二訪成會員</div>
+          </div>
+          <div class="loop-stage s3" onclick="showDetail('stage3')">
+            <div class="stage-name">成長</div>
+            <div class="stage-desc">解鎖條件</div>
+          </div>
+          <div class="loop-stage s4" onclick="showDetail('stage4')">
+            <div class="stage-name">終局</div>
+            <div class="stage-desc">元老參與</div>
+          </div>
+        </div>
+        <div class="loop-arrow">
+          ↩️ 帶更多朋友 → 回到發現階段（正向循環）
+        </div>
+      </div>
+      
+      <div id="detail-stage1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('stage1')">×</button>
+        <h4>發現階段 Discovery</h4>
+        <p>新客透過「引路人」機制被帶來欲室。</p>
+        <ul>
+          <li><strong>觸發</strong>：朋友推薦、會員帶人</li>
+          <li><strong>體驗</strong>：「這地方很特別，一般人找不到」</li>
+          <li><strong>綠色箭頭</strong>：想知道更多 → 進入引導階段</li>
+        </ul>
+      </div>
+      <div id="detail-stage2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('stage2')">×</button>
+        <h4>引導階段 Onboarding</h4>
+        <p>第二次來店，正式成為會員。</p>
+        <ul>
+          <li><strong>觸發</strong>：第二次消費</li>
+          <li><strong>體驗</strong>：收到第一個標誌物，看到會員牆</li>
+          <li><strong>綠色箭頭</strong>：想收集更多 → 進入成長階段</li>
+        </ul>
+      </div>
+      <div id="detail-stage3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('stage3')">×</button>
+        <h4>成長階段 Scaffolding</h4>
+        <p>持續來店，解鎖隱藏條件，升級標誌物。</p>
+        <ul>
+          <li><strong>觸發</strong>：持續消費、參與活動</li>
+          <li><strong>體驗</strong>：驚喜解鎖、社群討論「你知道怎麼解鎖 XX 嗎？」</li>
+          <li><strong>Booster</strong>：成為引路人，帶朋友來雙方都解鎖</li>
+          <li><strong>綠色箭頭</strong>：想成為 VVIP → 進入終局階段</li>
+        </ul>
+      </div>
+      <div id="detail-stage4" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('stage4')">×</button>
+        <h4>終局階段 Endgame</h4>
+        <p>成為 VVIP 元老，從「收集者」變成「參與者」。</p>
+        <ul>
+          <li><strong>觸發</strong>：完成 100% 條件</li>
+          <li><strong>體驗</strong>：獲得元老權力，投票決定菜單</li>
+          <li><strong>持續動力</strong>：謝位記錄、品牌內容、引路人次數加成</li>
+          <li><strong>綠色箭頭</strong>：帶更多朋友 → 回到發現階段（正向循環）</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- SAPS Model -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--coral-50); color: var(--coral-800);">🎁</div>
+        SAPS 獎勵設計模型
+      </div>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+        成本由低到高，黏性由高到低。先考慮地位，最後才考慮折扣。
+      </p>
+      <div class="saps-grid">
+        <div class="saps-card status" onclick="showDetail('saps-s')">
+          <div class="saps-letter">S</div>
+          <div class="saps-name">地位 Status</div>
+          <div class="saps-example">實體標誌物、元老謝位牆</div>
+        </div>
+        <div class="saps-card access" onclick="showDetail('saps-a')">
+          <div class="saps-letter">A</div>
+          <div class="saps-name">權限 Access</div>
+          <div class="saps-example">優先訂位、私廚優先報名</div>
+        </div>
+        <div class="saps-card power" onclick="showDetail('saps-p')">
+          <div class="saps-letter">P</div>
+          <div class="saps-name">權力 Power</div>
+          <div class="saps-example">元老投票權、引路人次數加成</div>
+        </div>
+        <div class="saps-card stuff" onclick="showDetail('saps-stuff')">
+          <div class="saps-letter">S</div>
+          <div class="saps-name">實質 Stuff</div>
+          <div class="saps-example">9折優惠（僅引導期使用）</div>
+        </div>
+      </div>
+      <div class="saps-note">
+        ⭐ 先給地位，最後才給折扣。折扣用完就忘，標誌物會到處炫耀。
+      </div>
+      
+      <div id="detail-saps-s" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('saps-s')">×</button>
+        <h4>地位型獎勵 (Status)</h4>
+        <p>成本最低，黏性最高。讓會員被看見、被認可。</p>
+        <ul>
+          <li><strong>實體標誌物</strong>：銅/銀/金，3D 列印成本低但炫耀價值高</li>
+          <li><strong>元老謝位牆</strong>：每次來店都被記錄，累積專屬歷史</li>
+          <li><strong>品牌內容出鏡</strong>：VVIP 出現在 Reels 素材中</li>
+        </ul>
+      </div>
+      <div id="detail-saps-a" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('saps-a')">×</button>
+        <h4>權限型獎勵 (Access)</h4>
+        <p>不花錢，但讓人感覺特別。提供專屬機會。</p>
+        <ul>
+          <li><strong>優先訂位</strong>：VVIP 專屬訂位通道</li>
+          <li><strong>私廚優先報名</strong>：活動開放前優先報名</li>
+          <li><strong>Talk Show 搖滾區</strong>：最佳觀賞位置保留</li>
+        </ul>
+      </div>
+      <div id="detail-saps-p" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('saps-p')">×</button>
+        <h4>權力型獎勵 (Power)</h4>
+        <p>讓會員能影響品牌，黏性最高的獎勵類型。</p>
+        <ul>
+          <li><strong>元老投票權</strong>：每季投票決定一款限定調酒</li>
+          <li><strong>引路人次數加成</strong>：VVIP 每月可當 5 次引路人</li>
+          <li><strong>Booster 效果</strong>：等級越高，能帶更多人，解鎖越快</li>
+        </ul>
+      </div>
+      <div id="detail-saps-stuff" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('saps-stuff')">×</button>
+        <h4>實質型獎勵 (Stuff)</h4>
+        <p>成本最高，黏性最低。只在引導階段使用，不當主力。</p>
+        <ul>
+          <li><strong>二訪 9 折</strong>：僅第二次來店使用，推動從路人變會員</li>
+          <li><strong>注意事項</strong>：過度依賴折扣會變成 Starbucks Rewards 的困境</li>
+          <li><strong>原則</strong>：折扣是推力，不是主要動機</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Execution Priorities -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon" style="background: var(--coral-50); color: var(--coral-800);">📋</div>
+        執行優先順序
+      </div>
+      <div class="priority-list">
+        <div class="priority-item" onclick="showDetail('task1')">
+          <span class="priority-badge p0">P0</span>
+          <div class="priority-content">
+            <div class="priority-title">確立品牌使命與口號</div>
+            <div class="priority-desc">「懂得藏起來喝酒的大人」</div>
+          </div>
+          <span class="priority-cd">CD1</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task2')">
+          <span class="priority-badge p0">P0</span>
+          <div class="priority-content">
+            <div class="priority-title">設計最高級標誌物</div>
+            <div class="priority-desc">3D 列印金色蠟燭/弔飾</div>
+          </div>
+          <span class="priority-cd">CD4</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task3')">
+          <span class="priority-badge p1">P1</span>
+          <div class="priority-content">
+            <div class="priority-title">建立會員系統框架</div>
+            <div class="priority-desc">4 層分級 + 5 指標 + 50 條件</div>
+          </div>
+          <span class="priority-cd">CD2+CD7</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task4')">
+          <span class="priority-badge p1">P1</span>
+          <div class="priority-content">
+            <div class="priority-title">設計引路人機制</div>
+            <div class="priority-desc">每月 3 次上限，帶朋友雙方解鎖</div>
+          </div>
+          <span class="priority-cd">CD5+CD6</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task5')">
+          <span class="priority-badge p1">P1</span>
+          <div class="priority-content">
+            <div class="priority-title">設計元老終局系統</div>
+            <div class="priority-desc">投票權、謝位記錄、品牌內容</div>
+          </div>
+          <span class="priority-cd">CD3+CD4</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task6')">
+          <span class="priority-badge p2">P2</span>
+          <div class="priority-content">
+            <div class="priority-title">設計彩蛋條件清單</div>
+            <div class="priority-desc">下雨、遠距、生日等隱藏解鎖</div>
+          </div>
+          <span class="priority-cd">CD7</span>
+        </div>
+        <div class="priority-item" onclick="showDetail('task7')">
+          <span class="priority-badge p2">P2</span>
+          <div class="priority-content">
+            <div class="priority-title">外送餐盒變現</div>
+            <div class="priority-desc">每日 20 份，月增 5 萬收入</div>
+          </div>
+          <span class="priority-cd">營收</span>
+        </div>
+      </div>
+      
+      <div id="detail-task1" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task1')">×</button>
+        <h4>P0：確立品牌使命與口號</h4>
+        <p>這是所有設計的基礎。沒有使命感，會員系統只是空殼。</p>
+        <ul>
+          <li><strong>執行內容</strong>：確認「懂得藏起來喝酒的大人」定位</li>
+          <li><strong>犧牲行動</strong>：公開說「我們不想被所有人找到」</li>
+          <li><strong>社群口號</strong>：「藏得好，喝得好」或「欲室不是秘密，是你的秘密」</li>
+        </ul>
+      </div>
+      <div id="detail-task2" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task2')">×</button>
+        <h4>P0：設計最高級標誌物</h4>
+        <p>召回核心老客人之前，必須先準備好最高級的標誌物。</p>
+        <ul>
+          <li><strong>形式</strong>：金色蠟燭/弔飾，3D 列印製作</li>
+          <li><strong>成本</strong>：單件成本低，但炫耀價值高</li>
+          <li><strong>時機</strong>：第一批 VVIP 產生前必須完成</li>
+        </ul>
+      </div>
+      <div id="detail-task3" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task3')">×</button>
+        <h4>P1：建立會員系統框架</h4>
+        <p>設計完整的 4 層分級與 50 項條件。</p>
+        <ul>
+          <li><strong>分級</strong>：基礎 → 銅 → 銀 → 金（VVIP）</li>
+          <li><strong>指標</strong>：來店次數、產品相關、消費金額、活動參與、隱藏彩蛋</li>
+          <li><strong>系統</strong>：客製化雲端會員系統，串接 Telegram/Line OA</li>
+        </ul>
+      </div>
+      <div id="detail-task4" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task4')">×</button>
+        <h4>P1：設計引路人機制</h4>
+        <p>讓推薦變成榮耀行為，而不是打擾朋友。</p>
+        <ul>
+          <li><strong>機制</strong>：帶朋友首訪，雙方都獲得隱藏條件解鎖</li>
+          <li><strong>上限</strong>：每月只能當 3 次引路人（稀缺感）</li>
+          <li><strong>加成</strong>：VVIP 每月可當 5 次引路人（Power 獎勵）</li>
+        </ul>
+      </div>
+      <div id="detail-task5" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task5')">×</button>
+        <h4>P1：設計元老終局系統</h4>
+        <p>VVIP 達成後不能沒事做，否則最忠誠的人會離開。</p>
+        <ul>
+          <li><strong>投票權</strong>：每季可投票決定一款限定調酒</li>
+          <li><strong>謝位記錄</strong>：每次來店都被記錄，累積專屬歷史</li>
+          <li><strong>品牌內容</strong>：出現在 Reels 素材中</li>
+        </ul>
+      </div>
+      <div id="detail-task6" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task6')">×</button>
+        <h4>P2：設計彩蛋條件清單</h4>
+        <p>隱藏條件不公開，讓顧客自己發現並在社群討論。</p>
+        <ul>
+          <li>下雨天來店 →「雨中漫步」</li>
+          <li>深夜 2 點後還在 →「夜貓子」</li>
+          <li>生日當週來店 → 隱藏禮物</li>
+          <li>連續 4 週來店 →「常客」</li>
+          <li>從台北以外縣市來 →「遠道而來」</li>
+        </ul>
+      </div>
+      <div id="detail-task7" class="detail-panel">
+        <button class="close-btn" onclick="hideDetail('task7')">×</button>
+        <h4>P2：外送餐盒變現</h4>
+        <p>增加非營業時段的收入來源。</p>
+        <ul>
+          <li><strong>目標</strong>：每日 20 份</li>
+          <li><strong>利潤</strong>：每份 80-100 元</li>
+          <li><strong>月增收</strong>：約 5 萬（22-25 天 × 2,000 元/天）</li>
+          <li><strong>前提</strong>：需先採購餐盒等外送用具</li>
+        </ul>
+      </div>
+      
+      <!-- Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">60萬</div>
+          <div class="metric-label">短期目標（3個月內）</div>
+          <div class="metric-change">↑ 200%（現況 20 萬）</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">80萬</div>
+          <div class="metric-label">中期目標（明年2月前）</div>
+          <div class="metric-change">↑ 300%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">100萬</div>
+          <div class="metric-label">長期穩定目標</div>
+          <div class="metric-change">↑ 400%</div>
+        </div>
+      </div>
+      
+      <!-- Warning -->
+      <div class="warning-box">
+        <div class="warning-title">⚠️ 風險提醒</div>
+        <div class="warning-text">
+          避免點數化陷阱（條件要有意義）｜黑帽節制（稀缺感不能過度）｜使命必須真誠（老闆自己要相信）
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p>欲室 BAR WISH｜遊戲化行銷策略報告</p>
+      <p style="margin-top: 8px; opacity: 0.7;">基於八角框架 Octalysis Framework by Yu-kai Chou</p>
+    </div>
+  </div>
+  
+  <script>
+    function showDetail(id) {
+      // Hide all detail panels first
+      document.querySelectorAll('.detail-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      // Show the selected one
+      const panel = document.getElementById('detail-' + id);
+      if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+    
+    function hideDetail(id) {
+      const panel = document.getElementById('detail-' + id);
+      if (panel) {
+        panel.classList.remove('active');
+      }
+    }
+  </script>
+</body>
+</html>
